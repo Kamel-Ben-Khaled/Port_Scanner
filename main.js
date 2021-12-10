@@ -161,3 +161,30 @@ async function getDir(args){
 }
 
 app.allowRendererProcessReuse = true
+
+
+const {dialog} = require('electron').remote;
+var fs = require('fs');
+
+//Test for save result
+export default {
+    methods: {
+        save: function () {
+            var options = {
+                title: "Save file",
+                defaultPath : "my_filename",
+                buttonLabel : "Save result",
+
+                filters :[
+                    {name: 'txt', extensions: ['txt']},
+                    {name: 'All Files', extensions: ['*']}
+                ]
+            };
+
+            dialog.showSaveDialog(null, options).then(({ filePath }) => {
+                fs.writeFileSync(filePath, "hello world", 'utf-8');
+            });
+        },
+    }
+}
+}
