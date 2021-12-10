@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="script-src 'self'  'unsafe-inline'"
+    />
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link rel="stylesheet" href="css/materialize.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <title>App Name</title>
+  </head>
+  <body>
+<!--design for side bar-->
+  <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%">
+    <h3 class="w3-bar-item">Option</h3>
+    <a href="#" class="w3-bar-item w3-button">Load Result</a>
+    <a href="#" class="w3-bar-item w3-button">Save result</a>
+    <br>
+    <a href="#" class="w3-bar-item w3-button" onclick="document.getElementById('id01').style.display='block'">About</a>
+    <a href="https://github.com/Kamel-Ben-Khaled/Scanner_port" class="w3-bar-item w3-button">Help</a>
+  </div>
+  <div style="margin-left:25%">
+
+    <div class="w3-container w3-teal">
+      <h1>Port Scanner</h1>
+    </div>
+    <div class="container center-align">
+      <p>select a target for nmap</p>
+      <form id="image-form">
+        <input type="text" value="localhost" id="target"/>
+        <input type="text" value="-sS" id="type"/>
+        <input type="submit" value="Scan" class="btn black" />
+      </form>
+
+      <div class="card output">
+<!--        <div class="card-content">-->
+<!--       -->
+<!--        </div>-->
+      </div>
+    </div>
+    <div class="row">
+      <form class="col s12">
+        <div class="row">
+          <div class="input-field col s12">           
+            <ul id='result'></ul>
+          </div>
+<!--        </div>-->
+<!--        <div class="row">-->
+<!--          <div class="input-field col s12">-->
+<!--            <a class="waves-effect waves-light btn" id="ls">ls -al</a>-->
+<!--            <a class="waves-effect waves-light btn" id="notepad">Start Notepad</a>-->
+<!--            <a class="waves-effect waves-light btn" id="qr">Get QR Code</a>-->
+
+<!--          </div>-->
+<!--        </div>-->
+      </form>
+    </div>
+<!--    Modal for About Section-->
+    <div id="id01" class="w3-modal">
+      <div class="w3-modal-content">
+        <div class="w3-container">
+          <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+          <p>Apllication devellloped By Kamel Ben Khaled</p>
+        </div>
+      </div>
+    </div>
+  </div>
+    <script src="js/materialize.min.js"></script>
+    <script>
+      const path = require('path')
+      const os = require('os')
+      const { ipcRenderer } = require('electron')
+
+      const form = document.getElementById('image-form');
+      const ul = document.getElementById('result');
+      const id = document.getElementById("ls");
+      const notepad = document.getElementById("notepad");
+      const qr = document.getElementById("qr");
+
+      
+      function createNode(element) {
+        return document.createElement(element); 
+      }
+
+      function append(parent, el) {
+        return parent.appendChild(el); 
+      }
+
+
+      
+      //   Onsubmit
+      form.addEventListener('submit', (e) => {
+        e.preventDefault()       
+        let target = document.getElementById('target').value
+        let type = document.getElementById('type').value
+        console.log(target +" "+ type)
+
+        ul.innerHTML ="";
+
+        ipcRenderer.send('send:cmd', {
+          target,
+          type
+        })
+      })
+
+      //   On done
+      ipcRenderer.on('cmd:done', (event, data) => {
+        console.log("nmap command completed")
+        //console.log(data)
+        data = data.split("\n")
+        data.map( function(res) {
+          let li = createNode('li')
+          span = createNode('span')
+          li.innerHTML = res
+          console.log(res)
+<!--          append(li, span)-->
+          append(ul,li)
+
+        })       
+      })
+
+<!--      id.addEventListener('click', (e,data) =>{-->
+<!--        console.log("ls -al")-->
+<!--        ul.innerHTML = "";-->
+<!--        ipcRenderer.send('list:files', {-->
+<!--          -->
+<!--        })-->
+
+<!--      })-->
+<!--      notepad.addEventListener('click', (e,data) =>{-->
+<!--        console.log("notepad")-->
+<!--        ipcRenderer.send('start:notepad', {-->
+<!--          -->
+<!--        })-->
+
+<!--      })-->
+<!--      qr.addEventListener('click', (e,data) =>{-->
+<!--        console.log("get qr code")-->
+<!--        ipcRenderer.send('get:webpage', {-->
+<!--         -->
+<!--        })-->
+
+<!--      })-->
+
+    </script>
+  </body>
+</html>
