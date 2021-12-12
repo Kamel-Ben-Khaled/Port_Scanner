@@ -13,10 +13,10 @@ let mainWindow
 
 function createMainWindow() {
   mainWindow = new BrowserWindow({
-    title: 'Port Scanner',
+    title: 'Part Scanner',
     width: isDev ? 800 : 500,
     height: 600,
-    icon: './assets/icons/Scanner.png',
+    icon: './assets/icons/icon.png',
     resizable: isDev ? true : false,
     backgroundColor: 'white',
     webPreferences: {
@@ -74,59 +74,58 @@ app.on('activate', () => {
 ipcMain.on('send:cmd', (event,args) =>{
   console.log(args);
   sendCommand(args);
- 
+
 })
 
-ipcMain.on('start:notepad', (event,args) =>{ 
+ipcMain.on('start:notepad', (event,args) =>{
   startProgram()
 })
 
 ipcMain.on('list:files', (event,args) =>{
   console.log(args);
   getDir()
- 
+
 })
 ipcMain.on('get:webpage', (event,args) =>{
   console.log(args);
   getWebPage()
- 
+
 })
 
 
 async function sendCommand(args){
-  
+
   console.log("------------------")
   let ar = await [args.type,args.target ]
   //let ar = await ['-sS','207.154.224.208' ]
   console.log(ar);
-  
+
   const nmap = spawn('nmap', ar);
   nmap.stdout.on('data', (data) => {
-    console.log(`${data}`)      
+    console.log(`${data}`)
     mainWindow.webContents.send("cmd:done", `${data}`);
-    
+
   });
-  
+
   nmap.stderr.on('data', (data) => {
     console.error(`stderr: ${data}`);
   });
-  
+
   nmap.on('close', (code) => {
    console.log(`child process exited with code ${code}`);
   });
 }
-onclick="about()"
 
-function getWebPage(){    
+function getWebPage(){
   const { BrowserWindow } = require('electron')
   const child = new BrowserWindow({ modal: true, show: false })
   child.loadURL('https://app.qr-code-generator.com/manage/?aftercreate=1&count=1')
   child.once('ready-to-show', () => {
     child.show()
-  })  
+  })
 }
 
-function startProgram(){ 
+function startProgram(){
   const child = require('child_process').execFile;
   const executablePath = "C:\\Windows\\System32\\notepad.exe";
   const parameters = [];
@@ -137,24 +136,24 @@ function startProgram(){
   child(executablePath, parameters, function(err, data) {
       console.log(err)
       console.log(data.toString());
-  });   
-  
+  });
+
 }
 
 async function getDir(args){
   const ar = await ['-al' ]
   //console.log(ar);
-  
+
   const ls = spawn('ls');
-  ls.stdout.on('data', (data) => {    
-    console.log(`${data}`)      
-    mainWindow.webContents.send("cmd:done", `${data}`);    
+  ls.stdout.on('data', (data) => {
+    console.log(`${data}`)
+    mainWindow.webContents.send("cmd:done", `${data}`);
   });
-  
+
   ls.stderr.on('data', (data) => {
     console.error(`stderr: ${data}`);
   });
-  
+
   ls.on('close', (code) => {
    console.log(`child process exited with code ${code}`);
   });
