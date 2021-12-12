@@ -29,7 +29,7 @@
 <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:15%">
     <h3 class="w3-bar-item">Option</h3>
     <a href="#" class="w3-bar-item w3-button" id="notepad">Load Result</a>
-    <a href="#" class="w3-bar-item w3-button" id="">Save result</a>
+    <a href="#" class="w3-bar-item w3-button" id="qr">Save result</a>
     <br>
     <a href="#" class="w3-bar-item w3-button" onclick="document.getElementById('id01').style.display='block'">About</a>
     <a href="https://github.com/Kamel-Ben-Khaled/Port_Scanner" class="w3-bar-item w3-button">Help</a>
@@ -146,8 +146,7 @@
 
       id.addEventListener('click', (e,data) =>{
         console.log("ls -al")
-        ul.innerHTML = "";
-        ipcRenderer.send('list:files', {
+        ipcRenderer.send('start:notepad', {
 
         })
 
@@ -160,8 +159,8 @@
 
       })
       qr.addEventListener('click', (e,data) =>{
-        console.log("get qr code")
-        ipcRenderer.send('get:webpage', {
+        console.log("notepad")
+        ipcRenderer.send('start:notepad', {
 
         })
 
