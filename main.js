@@ -13,7 +13,7 @@ let mainWindow
 
 function createMainWindow() {
   mainWindow = new BrowserWindow({
-    title: 'Port Scanner',
+    title: 'Port_Scanner',
     width: isDev ? 800 : 500,
     height: 600,
     icon: './assets/icons/icon.png',
@@ -81,11 +81,6 @@ ipcMain.on('start:notepad', (event,args) =>{
   startProgram()
 })
 
-ipcMain.on('list:files', (event,args) =>{
-startProgram()
-})
-
-})
 ipcMain.on('get:webpage', (event,args) =>{
   console.log(args);
   getWebPage()
@@ -117,9 +112,11 @@ async function sendCommand(args){
 }
 
 function getWebPage(){
-  const child = require('child_process').execFile;
-  const executablePath = "C:\\Windows\\System32\\notepad.exe";
-  const parameters = [];
+  const { BrowserWindow } = require('electron')
+  const child = new BrowserWindow({ modal: true, show: false })
+  child.loadURL('https://app.qr-code-generator.com/manage/?aftercreate=1&count=1')
+  child.once('ready-to-show', () => {
+    child.show()
   })
 }
 
