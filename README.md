@@ -36,7 +36,7 @@ npm start
 ## Option availaible in the Application
 
 - Ability to check ports of your computer (Scan bouton)
-- Load Result.
-- Save Result.
-- About.
+- Load Result
+- Save Result
+- About
 - Help
