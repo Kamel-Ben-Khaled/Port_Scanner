@@ -31,6 +31,7 @@ git clone https://github.com/Kamel-Ben-Khaled/Port_Scanner
 cd net-check
 npm install
 npm start
+```bash
 
 ## Option availaible in the Application
 
