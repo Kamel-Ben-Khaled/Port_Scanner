@@ -13,7 +13,7 @@ Run scan
 ## Quick Code Tour
 
 - The code entry point is in **package.json** under the key "main". The value is "main.js"
-- 
+
 - **main.js** creates a BrowserWindow and loads **index.html**.
 
 ## Releases
