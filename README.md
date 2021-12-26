@@ -13,7 +13,8 @@ Run scan
 ## Quick Code Tour
 
 - The code entry point is in **package.json** under the key "main". The value is "main.js"
-- **main.js** creates a BrowserWindow and loads **index.html**. It also has event handlers that enable keyboard shortcuts for Developer Tools on various platforms. Note that loadURL uses a [template literal](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) to give the source file's location.`` `file://${__dirname}/app/index.html` ``
+- 
+- **main.js** creates a BrowserWindow and loads **index.html**.
 
 ## Releases
 
